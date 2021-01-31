@@ -32,7 +32,7 @@ Setup your own ClamAV instance using docker and docker-compose.
 
    a. The following will be asked:
 
-   ![Configure Script](docs/configure-example.png)
+   ![Configure Script](docs/configure-example.jpg)
 
    b. Note that the image used by default are the following:
 
