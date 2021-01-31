@@ -16,16 +16,16 @@ Setup your own ClamAV instance using docker and docker-compose.
 
 ### II. Prerequisite
 
-    a. Tools/Software Requirements
+1. Tools/Software Requirements
 
-    1. [`docker`](https://www.docker.com/get-started)
-    2. [`docker-compose`](https://docs.docker.com/compose/install/)
+   a. [`docker`](https://www.docker.com/get-started)
+   b. [`docker-compose`](https://docs.docker.com/compose/install/)
 
-    b. [Spin up an instance via CFN(Optional)](templates/cloudformation/)
+2. [Spin up an instance via CFN(Optional)](templates/cloudformation/)
 
-    c. [Setup SSL using Lets Encrypt(Optional)](nginx/)
+3. [Setup SSL using Lets Encrypt(Optional)](nginx/)
 
-    d. [API Response Sample](clamav-api/)
+4. [API Response Sample](clamav-api/)
 
 ### III. Setup: How To's
 
