@@ -5,7 +5,7 @@
 
 ### Sample Response
 
-1. 200 Success
+1. `200 Success`
 
 ```json
 {
@@ -32,7 +32,7 @@
 }
 ```
 
-2. 400 Bad Request
+2. `400 Bad Request`
 
 ```json
 {
@@ -43,7 +43,7 @@
 }
 ```
 
-3. 403 Forbidden
+3. `403 Forbidden`
 
 ```json
 {
@@ -54,7 +54,7 @@
 }
 ```
 
-4. 413 Payload Too Large
+4. `413 Payload Too Large`
 
 ```json
 {
