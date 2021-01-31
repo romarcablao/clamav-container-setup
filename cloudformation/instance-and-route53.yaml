@@ -1,0 +1,116 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ClamAV Server CloudFormation
+
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t3a.medium
+  InstanceImage:
+    Description: AMI ID of your prefered operating system
+    Type: String
+    Default: ami-0c20b8b385217763f
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instance
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+  HostedZoneName:
+    Description: The route53 HostedZoneName.
+    Type: String
+  Subdomain:
+    Description: The subdomain of the dns entry.
+    Type: String
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      KeyName: !Ref KeyName
+      ImageId: !Ref InstanceImage
+      AvailabilityZone: ap-southeast-1a
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo apt-get update -y
+          sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          sudo groupadd docker
+          sudo usermod -a -G docker ubuntu
+          echo "@reboot sudo service docker start" | crontab
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp2
+            VolumeSize: '20'
+            DeleteOnTermination: 'false'
+            Encrypted: 'true'
+      Tags:
+        - Key: Name
+          Value: ClamAV
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ClamAV-SecurityGroup
+      GroupDescription: ClamAV Server Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Ref SSHLocation
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: '0.0.0.0/0'
+      Tags:
+        - Key: Name
+          Value: ClamAV-SecurityGroup
+
+  DnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Ref 'HostedZoneName'
+      Comment: DNS name for my instance.
+      Name: !Join ['', [!Ref 'Subdomain', ., !Ref 'HostedZoneName']]
+      Type: A
+      TTL: '60'
+      ResourceRecords:
+      - !GetAtt EC2Instance.PublicIp
+
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref EC2Instance
+  AZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value:
+      Fn::GetAtt:
+      - EC2Instance
+      - AvailabilityZone
+  PublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value:
+      Fn::GetAtt:
+      - EC2Instance
+      - PublicDnsName
+  PublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value:
+      Fn::GetAtt:
+      - EC2Instance
+      - PublicIp

@@ -1,0 +1,9 @@
+docker-compose.yaml
+nginx/conf.d/*.conf
+nginx/certs/*.pem
+nginx/certs/*.crt
+node_modules
+*.pem
+*.crt
+*.env
+*.zip
