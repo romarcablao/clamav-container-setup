@@ -41,7 +41,7 @@ Setup your own ClamAV instance using docker and docker-compose.
    | ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 |
    | REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
 
-3. Once the compose file is created, run/setup clamav, clamav-api and nginx proxy in single command.
+3. Once the compose file is created, you can now spin up clamav, clamav-api and nginx proxy containers in single command.
 
 ```bash
     docker-compose up
@@ -56,18 +56,18 @@ Setup your own ClamAV instance using docker and docker-compose.
 ```
 
 ```bash
-    # using httpie
-    http GET http://$SERVER:$PORT/api/v1/version Authorization:'$AUTH_KEY'
-    http --form POST http://$SERVER:$PORT/api/v1/scan FILE_UPLOAD@sample.txt FILE_UPLOAD@eicar.com Authorization:'$AUTH_KEY'
-```
-
-```bash
     # using curl
     curl --location --request POST 'http://$SERVER:$PORT/api/v1/scan' \
     --header 'Authorization: $AUTH_KEY' \
     --form 'FILE_UPLOAD=@"sample.txt"' \
     --form 'FILE_UPLOAD=@"eicar.com"'
 
+```
+
+```bash
+    # using httpie
+    http GET http://$SERVER:$PORT/api/v1/version Authorization:'$AUTH_KEY'
+    http --form POST http://$SERVER:$PORT/api/v1/scan FILE_UPLOAD@sample.txt FILE_UPLOAD@eicar.com Authorization:'$AUTH_KEY'
 ```
 
 ### IV. References
