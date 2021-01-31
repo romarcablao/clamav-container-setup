@@ -30,6 +30,7 @@ services:
   nginx:
     image: nginx:1.18.0-alpine
     restart: always
+    container_name: clamav-proxy
     volumes:
       - ./nginx/errors:/var/www/errors
       - ./nginx/conf.d:/etc/nginx/conf.d

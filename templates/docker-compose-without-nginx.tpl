@@ -10,6 +10,7 @@ services:
   clamav-api:
     image: $CLAMAV_API_IMAGE
     restart: always
+    container_name: clamav-proxy
     environment:
       NODE_ENV: production
       APP_PORT: 8080
