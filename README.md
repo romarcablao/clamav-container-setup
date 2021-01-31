@@ -11,8 +11,8 @@ Setup your own ClamAV instance using docker and docker-compose.
 2. `clamav-api` - contains config for clamav api container
 3. `nginx` - contains config and certs for nginx proxy container
 4. `templates` - contains docker-compose and nginx conf template
-   a. `cloudformation` - contains template for ec2 instance and route 53
-   b. `*.yaml, *.conf` - yaml and conf templates
+   1. `cloudformation` - contains template for ec2 instance and route 53
+   2. `*.yaml and *.conf` - yaml and conf templates
 
 ### II. Tools/Software Requirements
 
