@@ -62,9 +62,16 @@ Setup your own ClamAV instance using docker and docker-compose.
     SERVER=clamav.<your_domain>.com # localhost if running locally
     PORT=8080                       # port 8080 if no nginx proxy
 
-    # use httpie
-    http --form POST http://$SERVER:$PORT/api/v1/scan FILES@sample.txt
-    http --form POST http://$SERVER:$PORT/api/v1/scan FILES@eicar.com
+    # using httpie
+    http GET http://$SERVER:$PORT/api/v1/version Authorization:'$AUTH_KEY'
+    http --form POST http://$SERVER:$PORT/api/v1/scan FILE_UPLOAD@sample.txt FILE_UPLOAD@eicar.com Authorization:'$AUTH_KEY'
+
+    # using curl
+    curl --location --request POST 'http://$SERVER:$PORT/api/v1/scan' \
+    --header 'Authorization: $AUTH_KEY' \
+    --form 'FILE_UPLOAD=@"sample.txt"' \
+    --form 'FILE_UPLOAD=@"eicar.com"'
+
 ```
 
 ### IV. References
