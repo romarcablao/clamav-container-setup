@@ -11,8 +11,8 @@ Setup your own ClamAV instance using docker and docker-compose.
 2. `clamav-api` - contains config for clamav api container
 3. `nginx` - contains config and certs for nginx proxy container
 4. `templates` - contains docker-compose and nginx conf template
-   1. `cloudformation` - contains template for ec2 instance and route 53
-   2. `*yaml, &.conf` - yaml and conf templates
+   a. `cloudformation` - contains template for ec2 instance and route 53
+   b. `*.yaml, *.conf` - yaml and conf templates
 
 ### II. Tools/Software Requirements
 
@@ -33,13 +33,13 @@ Setup your own ClamAV instance using docker and docker-compose.
    a. The following will be asked:
 
    ```bash
-       Enter server name (e.g. clamav.thecloudspark.com): your_input
-       Enter api authentication key (default: pre-generated): your_input
-       Enter api form key (default: FILE_UPLOAD): your_input
-       Enter upload file max number (default: 3): your_input
-       Enter upload file max size in bytes (default: 10485760): your_input
-       Enter clamav scan timeout in milliseconds (default: 30000): your_input
-       Use Nginx as proxy? (default: No) [Y/N]: your_input
+       Enter server name (e.g. clamav.thecloudspark.com):           #your_input
+       Enter api authentication key (default: pre-generated):       #your_input
+       Enter api form key (default: FILE_UPLOAD):                   #your_input
+       Enter upload file max number (default: 3):                   #your_input
+       Enter upload file max size in bytes (default: 10485760):     #your_input
+       Enter clamav scan timeout in milliseconds (default: 30000):  #your_input
+       Use Nginx as proxy? (default: No) [Y/N]:                     #your_input
    ```
 
    b. Note that the image used by default are the following:
