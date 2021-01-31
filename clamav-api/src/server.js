@@ -22,7 +22,9 @@ async function makeServer(cfg) {
 
     app.use(function (req, res, next) {
       if (req.headers.authorization !== process.env.AUTHTOKEN) {
-        return res.status(403).json({ error: "Invalid credentials!" });
+        return res
+          .status(403)
+          .json({ success: false, data: { error: "Invalid credentials." } });
       }
       next();
     });
