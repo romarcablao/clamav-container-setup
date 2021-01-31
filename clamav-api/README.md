@@ -3,6 +3,24 @@
 [![GitHub](https://img.shields.io/badge/GitHub-romarcablao-lightgrey)](https://github.com/romarcablao)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-romarcablao-blue)](https://linkedin.com/in/romarcablao)
 
+API for ClamAV using NodeJS
+
+### Build and Run
+
+1. Install depdendies and run via npm locally.
+
+```bash
+  npm install
+  npm run start
+```
+
+2. Build image and run using docker.
+
+```bash
+  docker build -t clamav-api:latest .
+  docker run -p 80:8080 --name clamav-api clamav-api:latest
+```
+
 ### Sample Response
 
 1. `200 Success`

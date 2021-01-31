@@ -10,16 +10,16 @@ Setup your own ClamAV instance using docker and docker-compose.
 1. `clamav-api` - contains config for clamav api container
 2. `clamav` - contains config for clamav container
 3. `nginx` - contains config and certs for nginx proxy container
-4. `templates` - contains docker-compose and nginx conf template
+4. `templates` - contains cft, compose and nginx conf templates
    1. `cloudformation` - contains template for ec2 instance and route 53
-   2. `*.yaml and *.conf` - yaml and conf templates
+   2. `*.yaml and *.conf` - contains yaml and conf templates
 
 ### II. Prerequisite
 
 1. Required Tools/Software
 
-   a. [`docker`](https://www.docker.com/get-started)\
-   b. [`docker-compose`](https://docs.docker.com/compose/install/)
+   1. [`docker`](https://www.docker.com/get-started)
+   2. [`docker-compose`](https://docs.docker.com/compose/install/)
 
 2. [Spin up an instance via CFN (Optional)](templates/cloudformation/)
 
@@ -75,7 +75,10 @@ Setup your own ClamAV instance using docker and docker-compose.
 ```bash
     # using httpie
     http GET http://$SERVER:$PORT/api/v1/version Authorization:'$AUTH_KEY'
-    http --form POST http://$SERVER:$PORT/api/v1/scan FILE_UPLOAD@sample.txt FILE_UPLOAD@eicar.com Authorization:'$AUTH_KEY'
+    http --form POST http://$SERVER:$PORT/api/v1/scan \
+        FILE_UPLOAD@sample.txt \
+        FILE_UPLOAD@eicar.com \
+        Authorization:'$AUTH_KEY'
 ```
 
 ### IV. References
