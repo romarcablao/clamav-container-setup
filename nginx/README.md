@@ -20,4 +20,4 @@
     ssl_certificate_key /etc/nginx/certs/privkey.pem;
 ```
 
-5. If you dont want to serve the api on port 443 (HTTPS), you may opt using the port 80(HTTP) in serving the rest api. Simply update the ports in the [`docker-compose.yaml`](../docker-compose.yaml) and nginx [`default.conf`](/conf.d/default.conf).
+5. If you dont want to serve the api on port 443 (HTTPS), you may opt using the port 80(HTTP) in serving the rest api. Simply update the ports in the `docker-compose.yaml` and nginx `default.conf`.

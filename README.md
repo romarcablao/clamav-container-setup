@@ -15,8 +15,8 @@ Setup your own ClamAV instance using docker and docker-compose.
 
 ### II. Tools/Software Requirements
 
-1. `docker`
-2. `docker-compose`
+1. [`docker`](https://www.docker.com/get-started)
+2. [`docker-compose`](https://docs.docker.com/compose/install/)
 
 ### III. Setup: How To's
 
@@ -45,7 +45,14 @@ Setup your own ClamAV instance using docker and docker-compose.
     docker-compose up
 ```
 
-3. Test your clamav instance.
+Note: The image used by default are the following
+
+| Role     | IP                                                                                                          | OS      | RAM | CPU |
+| -------- | ----------------------------------------------------------------------------------------------------------- | ------- | --- | --- |
+| ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 | 2GB | 2   |
+| REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
+
+2.  Test your clamav instance.
 
 ```bash
     # set env vars
