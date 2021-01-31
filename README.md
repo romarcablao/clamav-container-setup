@@ -10,8 +10,9 @@ Setup your own ClamAV instance using docker and docker-compose.
 1. `clamav` - contains config for clamav container
 2. `clamav-api` - contains config for clamav api container
 3. `nginx` - contains config and certs for nginx proxy container
-4. `cloudformation` - contains template for ec2 instance and route 53
-5. `templates` - contains docker-compose and nginx conf template
+4. `templates` - contains docker-compose and nginx conf template
+   1. `cloudformation` - contains template for ec2 instance and route 53
+   2. `*yaml, &.conf` - yaml and conf templates
 
 ### II. Tools/Software Requirements
 
@@ -27,24 +28,26 @@ Setup your own ClamAV instance using docker and docker-compose.
     docker build -t <account>/clamav-api:latest .
 ```
 
-2. Run `configure.sh` to create docker-compose file with your prefered configuration. The following will be asked:
+2. Run `configure.sh` to create docker-compose file with your prefered configuration.
 
-```bash
-    Enter server name (e.g. clamav.thecloudspark.com): your_input
-    Enter api authentication key (default: pre-generated): your_input
-    Enter api form key (default: FILE_UPLOAD): your_input
-    Enter upload file max number (default: 3): your_input
-    Enter upload file max size in bytes (default: 10485760): your_input
-    Enter clamav scan timeout in milliseconds (default: 30000): your_input
-    Use Nginx as proxy? (default: No) [Y/N]: your_input
-```
+   a. The following will be asked:
 
-`Note: The image used by default are the following`
+   ```bash
+       Enter server name (e.g. clamav.thecloudspark.com): your_input
+       Enter api authentication key (default: pre-generated): your_input
+       Enter api form key (default: FILE_UPLOAD): your_input
+       Enter upload file max number (default: 3): your_input
+       Enter upload file max size in bytes (default: 10485760): your_input
+       Enter clamav scan timeout in milliseconds (default: 30000): your_input
+       Use Nginx as proxy? (default: No) [Y/N]: your_input
+   ```
 
-| Name     | Image Repository                                                                                            | Version |
-| -------- | ----------------------------------------------------------------------------------------------------------- | ------- |
-| ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 |
-| REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
+   b. Note that the image used by default are the following:
+
+   | Name     | Image Repository                                                                                            | Version |
+   | -------- | ----------------------------------------------------------------------------------------------------------- | ------- |
+   | ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 |
+   | REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
 
 3. Once the compose file is created, run/setup clamav, clamav-api and nginx proxy in single command.
 
