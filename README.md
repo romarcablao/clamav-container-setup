@@ -39,20 +39,20 @@ Setup your own ClamAV instance using docker and docker-compose.
     Use Nginx as proxy? (default: No) [Y/N]: your_input
 ```
 
+`Note: The image used by default are the following`
+
+| Name     | Image Repository                                                                                            | Version |
+| -------- | ----------------------------------------------------------------------------------------------------------- | ------- |
+| ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 |
+| REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
+
 3. Once the compose file is created, run/setup clamav, clamav-api and nginx proxy in single command.
 
 ```bash
     docker-compose up
 ```
 
-Note: The image used by default are the following
-
-| Role     | IP                                                                                                          | OS      | RAM | CPU |
-| -------- | ----------------------------------------------------------------------------------------------------------- | ------- | --- | --- |
-| ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 | 2GB | 2   |
-| REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
-
-2.  Test your clamav instance.
+4.  Test your clamav instance.
 
 ```bash
     # set env vars
