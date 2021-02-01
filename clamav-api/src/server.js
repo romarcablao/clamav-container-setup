@@ -16,6 +16,12 @@ async function makeServer(config) {
 
     app.use(cors());
 
+    app.get("/", function (req, res) {
+      res.redirect(
+        "https://github.com/romarcablao/clamav-container-setup#clamav-container-setup"
+      );
+    });
+
     app.use(function (req, res, next) {
       if (req.headers.authorization !== process.env.AUTHTOKEN) {
         return res
