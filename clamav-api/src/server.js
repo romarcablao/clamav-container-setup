@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const versionRouter = require("./routes/version");
-const scanFormData = require("./routes/scan");
+const scanRouter = require("./routes/scan");
 
 async function makeServer(config) {
   try {
@@ -62,7 +62,7 @@ async function makeServer(config) {
 
     app.use("/api/v1/version", versionRouter);
 
-    app.use("/api/v1/scan", scanFormData);
+    app.use("/api/v1/scan", scanRouter);
 
     app.all("*", (req, res, next) => {
       res.status(405).json({ success: false, data: { error: "Not allowed" } });
