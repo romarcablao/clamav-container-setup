@@ -8,8 +8,10 @@ const scanFile = async (upload, av) => {
   fileStream.push(upload.data);
   fileStream.push(null);
   const result = await av.scan_stream(fileStream);
+
   return {
     name: upload.name,
+    request: upload.request || "multipart/form-data",
     is_infected: result.is_infected,
     viruses: result.viruses,
   };
@@ -43,7 +45,7 @@ router.route("/").post(async (req, res, next) => {
     return res.status(400).json({
       success: false,
       data: {
-        error: `Too much files uploaded. Max number of files to scan is ${MAX_FILES_NUMBER}.`,
+        error: `Too much files uploaded. Max number of files to scan is ${MAX_FILES_NUMBER}`,
       },
     });
   }
@@ -63,6 +65,7 @@ router.route("/").post(async (req, res, next) => {
         .json({ success: false, data: { error: err.message } });
     }
   }
+  console.log(resultArray);
   res.json({ success: true, data: { result: resultArray } });
 });
 

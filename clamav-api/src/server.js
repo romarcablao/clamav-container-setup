@@ -1,44 +1,71 @@
 const NodeClam = require("clamscan");
-const cors = require("cors");
 const express = require("express");
-const morgan = require("morgan");
 const fileUpload = require("express-fileupload");
-const versionRouter = require("./routes/version");
-const scanRouter = require("./routes/scan");
+const morgan = require("morgan");
+const cors = require("cors");
 
-async function makeServer(cfg) {
+const versionRouter = require("./routes/version");
+const scanFormData = require("./routes/scan");
+
+async function makeServer(config) {
   try {
-    const newAvConfig = Object.assign({}, cfg.clamAVConfig);
+    const newAvConfig = Object.assign({}, config.clamAVConfig);
     const clamscan = await new NodeClam().init(newAvConfig);
     const PORT = process.env.APP_PORT || 3000;
     const app = express();
 
     app.use(cors());
 
-    app.use((req, res, next) => {
-      req._av = clamscan;
-      next();
-    });
-
     app.use(function (req, res, next) {
       if (req.headers.authorization !== process.env.AUTHTOKEN) {
         return res
           .status(403)
-          .json({ success: false, data: { error: "Invalid credentials." } });
+          .json({ success: false, data: { error: "Invalid credentials" } });
       }
       next();
     });
 
-    app.use(fileUpload({ ...cfg.fileUploadConfig }));
+    app.use(fileUpload({ ...config.fileUploadConfig }));
+
+    app.use(function (req, res, next) {
+      req._av = clamscan;
+      console.log(req.headers);
+      if (
+        !req.files &&
+        req.headers["content-length"] &&
+        req.headers["content-length"] !== "0"
+      ) {
+        let data = new Buffer.from("");
+        req.on("data", function (chunk) {
+          data = Buffer.concat([data, chunk]);
+        });
+        req.on("end", function () {
+          req.rawBody = data;
+          req.files = {
+            [process.env.APP_FORM_KEY]: [
+              {
+                name: `file-${Date.now()}`,
+                request: "binary",
+                data: req.rawBody,
+              },
+            ],
+          };
+          next();
+        });
+      } else {
+        next();
+      }
+    });
+
     process.env.NODE_ENV !== "test" &&
       app.use(morgan(process.env.APP_MORGAN_LOG_FORMAT || "combined"));
 
     app.use("/api/v1/version", versionRouter);
 
-    app.use("/api/v1/scan", scanRouter);
+    app.use("/api/v1/scan", scanFormData);
 
     app.all("*", (req, res, next) => {
-      res.status(405).json({ success: false, data: { error: "Not allowed." } });
+      res.status(405).json({ success: false, data: { error: "Not allowed" } });
     });
 
     const srv = app.listen(PORT, () => {
