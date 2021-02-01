@@ -3,6 +3,7 @@ nginx/conf.d/*.conf
 nginx/certs/*.pem
 nginx/certs/*.crt
 node_modules
+*.notes
 *.pem
 *.crt
 *.env
