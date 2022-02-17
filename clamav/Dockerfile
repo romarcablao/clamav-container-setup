@@ -1,7 +1,7 @@
-FROM alpine:3.13.1
+FROM alpine:3.15.0
 
-# set version
-ENV CLAM_VERSION=0.103.0-r1
+# set version (refer to alpine linux version)
+ENV CLAM_VERSION=0.104.1-r0
 
 # add dependencies
 RUN apk add --no-cache clamav=$CLAM_VERSION clamav-libunrar=$CLAM_VERSION 
@@ -30,8 +30,12 @@ USER clamav_user
 # initial update of av databases
 RUN freshclam
 
+# set volume
 VOLUME /var/lib/clamav
 
+# expose service
+EXPOSE 3310
+
+# add entrypoint
 ENTRYPOINT ["sh","/docker-entrypoint.sh"]
 
-EXPOSE 3310
