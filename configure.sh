@@ -8,9 +8,9 @@ echo -e "_______________________________________________________________________
 echo -e "                                                                     B Y :   R O M A R   C  . "    
 echo -e "______________________________________________________________________________________________"   
 
-#container image build of clamav version 0.103.0
-export CLAMAV_IMAGE=romarcablao/clamav:0.103.0
-export CLAMAV_API_IMAGE=romarcablao/clamav-api:0.103.0
+#container image build of clamav version 0.104.1
+export CLAMAV_IMAGE=romarcablao/clamav:0.104.1
+export CLAMAV_API_IMAGE=romarcablao/clamav-api:0.104.1
 
 #set default
 DEFAULT_SERVER_NAME=clamav.thecloudspark.com

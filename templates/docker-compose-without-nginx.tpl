@@ -22,6 +22,7 @@ services:
       APP_MAX_FILES_NUMBER: $MAX_UPLOAD_FILES_NUMBER
       CLAMD_TIMEOUT: $CLAMD_TIMEOUT
       AUTHTOKEN: $API_AUTH_KEY
+      REDIRECT_URL: null
     container_name: clamav-api
     ports:
       - 8080:8080
