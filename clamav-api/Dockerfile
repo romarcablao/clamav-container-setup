@@ -1,4 +1,4 @@
-FROM node:14.15-stretch-slim
+FROM node:16.13.2-alpine3.15
 
 # set work directory
 WORKDIR /clamav-api

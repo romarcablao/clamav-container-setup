@@ -11,15 +11,16 @@ async function makeServer(config) {
   try {
     const newAvConfig = Object.assign({}, config.clamAVConfig);
     const clamscan = await new NodeClam().init(newAvConfig);
+    const redirectURL =
+      process.env.REDIRECT_URL ||
+      "https://github.com/romarcablao/clamav-container-setup#clamav-container-setup";
     const PORT = process.env.APP_PORT || 3000;
     const app = express();
 
     app.use(cors());
 
     app.get("/", function (req, res) {
-      res.redirect(
-        "https://github.com/romarcablao/clamav-container-setup#clamav-container-setup"
-      );
+      res.redirect(redirectURL);
     });
 
     app.use(function (req, res, next) {
