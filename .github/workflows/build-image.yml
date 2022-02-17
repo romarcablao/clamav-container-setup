@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  "build":
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Docker Image
+      run: |
+        docker build . --file Dockerfile --tag romarcablao/clamav:0.104.1
+        docker build . --file Dockerfile --tag romarcablao/clamav-api:0.104.1
+
+
