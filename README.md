@@ -46,8 +46,8 @@ Setup your own ClamAV instance using docker and docker-compose.
 
    | Name     | Image Repository                                                                                            | Version |
    | -------- | ----------------------------------------------------------------------------------------------------------- | ------- |
-   | ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.103.0 |
-   | REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.103.0 |
+   | ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.104.1 |
+   | REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.104.1 |
 
 3. Once the compose file is created, you can now spin up clamav, clamav-api and nginx proxy containers in single command.
 
