@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build Docker Image
       run: |
-        docker build . --file Dockerfile --tag romarcablao/clamav:0.104.1
-        docker build . --file Dockerfile --tag romarcablao/clamav-api:0.104.1
+        docker build . --file clamav/Dockerfile --tag romarcablao/clamav:0.104.1
+        docker build . --file clamav-api/Dockerfile --tag romarcablao/clamav-api:0.104.1
 
 
