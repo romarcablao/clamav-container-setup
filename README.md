@@ -51,7 +51,7 @@ Setup your own ClamAV instance using docker and docker-compose.
 
    > Notes:
    >
-   > 1. The community organization "**thecloudspark**" is newly created organization in DockerHub owned by Romar C. (Febuary 2022)
+   > 1. The "**thecloudspark**" is a newly created community organization in DockerHub owned by Romar C. (February 2022)
    > 2. Image version 0.104.1 is the latest stable version of ClamAV (February 2022)
 
 3. Once the compose file is created, you can now spin up clamav, clamav-api and nginx proxy containers in single command.
