@@ -44,10 +44,15 @@ Setup your own ClamAV instance using docker and docker-compose.
 
    b. Note that the image used by default are the following, however you can change these values on the compose file.
 
-   | Name     | Image Repository                                                                                            | Version |
-   | -------- | ----------------------------------------------------------------------------------------------------------- | ------- |
-   | ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated)         | 0.104.1 |
-   | REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated) | 0.104.1 |
+   | Name     | Image Repository                                                                                                                                                                                                             | Version |
+   | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+   | ClamAV   | [romarcablao/clamav](https://hub.docker.com/r/romarcablao/clamav/tags?page=1&ordering=last_updated), [thecloudspark/clamav](https://hub.docker.com/r/thecloudspark/clamav/tags?page=1&ordering=last_updated)                 | 0.104.1 |
+   | REST API | [romarcablao/clamav-api](https://hub.docker.com/r/romarcablao/clamav-api/tags?page=1&ordering=last_updated), [thecloudspark/clamav-api](https://hub.docker.com/r/thecloudspark/clamav-api/tags?page=1&ordering=last_updated) | 0.104.1 |
+
+   > Notes:
+   >
+   > 1. The community organization "**thecloudspark**" is newly created organization in DockerHub owned by Romar C. (Febuary 2022)
+   > 2. Image version 0.104.1 is the latest stable version of ClamAV (February 2022)
 
 3. Once the compose file is created, you can now spin up clamav, clamav-api and nginx proxy containers in single command.
 
