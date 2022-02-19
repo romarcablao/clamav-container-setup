@@ -26,8 +26,8 @@ NGINX_CONFIG_TEMPLATE=nginx.tpl
 
 #cleanup function
 cleanup () {
-    rm ./nginx/conf.d/default.conf
-    rm ./docker-compose.yaml
+    rm ./nginx/conf.d/default.conf 2>/dev/null
+    rm ./docker-compose.yaml 2>/dev/null
 }
 
 #override default
@@ -38,7 +38,7 @@ read -p "Enter upload file max number (default: $DEFAULT_MAX_UPLOAD_FILES_NUMBER
 read -p "Enter upload file max size in megabyte (default: $DEFAULT_MAX_UPLOAD_FILE_SIZE): " MAX_UPLOAD_FILE_SIZE
 read -p "Enter clamav scan timeout in seconds (default: $DEFAULT_CLAMD_TIMEOUT): " CLAMD_TIMEOUT
 read -p "Use Nginx as proxy? (default: $USE_NGINX) [Y/N]: " USE_NGINX
-[[ $USE_NGINX =~ ^[Yy]$ ]] && read -p "Use Nginx as proxy? (default: $USE_CERTBOT_SSL) [Y/N]: " USE_CERTBOT_SSL
+[[ $USE_NGINX =~ ^[Yy]$ ]] && read -p "Generate Certbot SSL Certificate? (default: $USE_CERTBOT_SSL) [Y/N]: " USE_CERTBOT_SSL
 
 #check user input and set default value if null
 [ -z "$SERVER_NAME" ] && SERVER_NAME=$DEFAULT_SERVER_NAME
@@ -76,15 +76,19 @@ export CLAMD_TIMEOUT
 [[ $USE_CERTBOT_SSL =~ ^[Yy]$ ]] && export NGINX_CONFIG_TEMPLATE=nginx-ssl.tpl
 
 #ssl setup
-if [[ $USE_CERTBOT_SSL =~ ^[Yy]$]]
+if [[ $USE_CERTBOT_SSL =~ ^[Yy]$ ]]
 then
+    echo -e "______________________________________________________________________________________________"
+    echo -e "\t" Generating Certbot SSL Certificate
+    echo -e "______________________________________________________________________________________________"
+    
     #substitute
     cleanup
     sed -e "s|%%SERVER_NAME%%|$SERVER_NAME|g; s|%%MAX_FILE_SIZE%%|$MAX_UPLOAD_FILE_SIZE_IN_MB|g;" ./templates/nginx-init.tpl > ./nginx/conf.d/default.conf
     envsubst < ./templates/compose-init.tpl > ./docker-compose.yaml
 
     #initialize nginx and certbot
-    docker-compose up -d
+    docker-compose up -d --quiet-pull
     
     #setup certbot ssl
     docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $SERVER_NAME
@@ -97,7 +101,7 @@ sed -e "s|%%SERVER_NAME%%|$SERVER_NAME|g; s|%%MAX_FILE_SIZE%%|$MAX_UPLOAD_FILE_S
 envsubst < ./templates/$DOCKER_COMPOSE_TEMPLATE > ./docker-compose.yaml
 
 #done
-echo -e "\t" Configuration files are updated.
+echo -e "\n\t" Configuration files are updated.
 echo -e "______________________________________________________________________________________________"
 echo -e "\nYou can run 'docker-compose up' now to spin up the containers!"
 [[ $USE_NGINX =~ ^[Nn]$ ]] && echo -e "API will be serving at port 8080"
