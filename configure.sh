@@ -64,6 +64,7 @@ echo -e "\t MAX_UPLOAD_FILE_SIZE\t\t: ${MAX_UPLOAD_FILE_SIZE_IN_MB}MB"
 echo -e "\t CLAMD_TIMEOUT\t\t\t: ${CLAMD_TIMEOUT}ms\n"
 
 #export env vars
+export CURRENT_LOCATION=$(pwd)
 export SERVER_NAME
 export API_AUTH_KEY
 export API_FORM_KEY
@@ -93,6 +94,10 @@ then
     #setup certbot ssl
     docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $SERVER_NAME
     docker-compose down
+
+    #setup cron for renewal
+    chmod +x renew.sh
+    (crontab -l 2>/dev/null; echo "0 0 * */3 * $CURRENT_LOCATION/renew.sh") | crontab -
 fi
 
 #setup final config
