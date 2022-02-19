@@ -1,8 +1,9 @@
 server {
-    listen 443 ssl;
+    listen 80;
+    listen [::]:80;
+
     server_name %%SERVER_NAME%%;
-    ssl_certificate /etc/nginx/certs/fullchain.pem;
-    ssl_certificate_key /etc/nginx/certs/privkey.pem;
+    server_tokens off;
 
     client_max_body_size %%MAX_FILE_SIZE%%M;
 
@@ -16,6 +17,10 @@ server {
         proxy_set_header X-Forwarded-Proto https;
     }
 
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
     error_page 413 /413.json;
     location = /413.json {
         root   /var/www/errors;
@@ -26,5 +31,3 @@ server {
         root   /usr/share/nginx/html;
     }
 }
-
-server_tokens off;

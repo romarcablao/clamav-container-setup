@@ -35,13 +35,23 @@ services:
     volumes:
       - ./nginx/errors:/var/www/errors
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot/www:/var/www/certbot/:ro
+      - ./nginx/certbot/conf/:/etc/nginx/ssl/:ro
     ports:
       - 80:80
+      - 443:443
     networks:
       - clamav-network
     depends_on:
       - clamav
       - clamav-api
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - ./nginx/certbot/www/:/var/www/certbot/:rw
+      - ./nginx/certbot/conf/:/etc/letsencrypt/:rw
 
 networks:
   clamav-network:
