@@ -20,7 +20,15 @@ DEFAULT_MAX_UPLOAD_FILE_SIZE=10
 DEFAULT_MAX_UPLOAD_FILES_NUMBER=3
 DEFAULT_CLAMD_TIMEOUT=300
 USE_NGINX=No
+USE_CERTBOT_SSL=No
 DOCKER_COMPOSE_TEMPLATE=docker-compose-without-nginx.tpl
+NGINX_CONFIG_TEMPLATE=nginx.tpl
+
+#cleanup function
+cleanup () {
+    rm ./nginx/conf.d/default.conf
+    rm ./docker-compose.yaml
+}
 
 #override default
 read -p "Enter server name (e.g. $DEFAULT_SERVER_NAME): " SERVER_NAME
@@ -30,6 +38,7 @@ read -p "Enter upload file max number (default: $DEFAULT_MAX_UPLOAD_FILES_NUMBER
 read -p "Enter upload file max size in megabyte (default: $DEFAULT_MAX_UPLOAD_FILE_SIZE): " MAX_UPLOAD_FILE_SIZE
 read -p "Enter clamav scan timeout in seconds (default: $DEFAULT_CLAMD_TIMEOUT): " CLAMD_TIMEOUT
 read -p "Use Nginx as proxy? (default: $USE_NGINX) [Y/N]: " USE_NGINX
+[[ $USE_NGINX =~ ^[Yy]$ ]] && read -p "Use Nginx as proxy? (default: $USE_CERTBOT_SSL) [Y/N]: " USE_CERTBOT_SSL
 
 #check user input and set default value if null
 [ -z "$SERVER_NAME" ] && SERVER_NAME=$DEFAULT_SERVER_NAME
@@ -62,13 +71,29 @@ export MAX_UPLOAD_FILE_SIZE
 export MAX_UPLOAD_FILES_NUMBER
 export CLAMD_TIMEOUT
 [[ $USE_NGINX =~ ^[Yy]$ ]] && export DOCKER_COMPOSE_TEMPLATE=docker-compose-with-nginx.tpl
+[[ $USE_NGINX =~ ^[Yy]$ ]] && export NGINX_CONFIG_TEMPLATE=nginx.tpl
+[[ $USE_CERTBOT_SSL =~ ^[Yy]$ ]] && export DOCKER_COMPOSE_TEMPLATE=docker-compose-with-nginx-ssl.tpl
+[[ $USE_CERTBOT_SSL =~ ^[Yy]$ ]] && export NGINX_CONFIG_TEMPLATE=nginx-ssl.tpl
 
-#remove existing
-rm ./nginx/conf.d/default.conf
-rm ./docker-compose.yaml
+#ssl setup
+if [[ $USE_CERTBOT_SSL =~ ^[Yy]$]]
+then
+    #substitute
+    cleanup
+    sed -e "s|%%SERVER_NAME%%|$SERVER_NAME|g; s|%%MAX_FILE_SIZE%%|$MAX_UPLOAD_FILE_SIZE_IN_MB|g;" ./templates/nginx-init.tpl > ./nginx/conf.d/default.conf
+    envsubst < ./templates/compose-init.tpl > ./docker-compose.yaml
 
-#substitute 
-sed -e "s|%%SERVER_NAME%%|$SERVER_NAME|g; s|%%MAX_FILE_SIZE%%|$MAX_UPLOAD_FILE_SIZE_IN_MB|g;" ./templates/nginx-default.tpl > ./nginx/conf.d/default.conf
+    #initialize nginx and certbot
+    docker-compose up -d
+    
+    #setup certbot ssl
+    docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $SERVER_NAME
+    docker-compose down
+fi
+
+#setup final config
+cleanup
+sed -e "s|%%SERVER_NAME%%|$SERVER_NAME|g; s|%%MAX_FILE_SIZE%%|$MAX_UPLOAD_FILE_SIZE_IN_MB|g;" ./templates/$NGINX_CONFIG_TEMPLATE > ./nginx/conf.d/default.conf
 envsubst < ./templates/$DOCKER_COMPOSE_TEMPLATE > ./docker-compose.yaml
 
 #done
